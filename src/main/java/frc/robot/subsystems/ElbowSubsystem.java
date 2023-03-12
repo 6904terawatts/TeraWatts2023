@@ -10,11 +10,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElbowSubsystem extends SubsystemBase {
-  static CANSparkMax elbowMotor = new CANSparkMax(1, MotorType.kBrushed);
-  static CANSparkMax armMotor = new CANSparkMax(2, MotorType.kBrushed);
-   
+  static CANSparkMax elbowMotor = new CANSparkMax(3, MotorType.kBrushed);
+  
   public ElbowSubsystem() {
-    armMotor.restoreFactoryDefaults();
     elbowMotor.restoreFactoryDefaults();
     
     // elbowMotor = new CANSparkMax(1, MotorType.kBrushless);
@@ -27,12 +25,12 @@ public class ElbowSubsystem extends SubsystemBase {
 
   public void foldupElbow() {
     elbowMotor.set(-0.1);
-    armMotor.set(.1);
+  
   }
  
   public void stopElbow() {
     elbowMotor.set(0);
-    armMotor.set(0);
+   
   }
 
   public static void start() {

@@ -45,6 +45,15 @@ motors[3].follow(motors[1]);
 public void setArcadeDrive(double throttle, double turn) {
   double leftOutput = throttle + turn;
   double rightOutput = throttle - turn;
+  
+  
+  if (Math.abs(leftOutput) < Constants.kArcadeDeadBand) {
+    leftOutput = 0;
+  }
+  if (Math.abs(rightOutput) < Constants.kArcadeDeadBand) {
+    rightOutput = 0;
+  }
+
   setPercentOutput(leftOutput, rightOutput);
 }
 
