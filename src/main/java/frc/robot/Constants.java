@@ -22,4 +22,6 @@ public final class Constants {
     public static final int leftJoystickId = 1;
     public static final int rightJoystickId = 2;
     public static final int ARM_CONTROLLER_1 = 0;
+    public static final double kElavterDeadband = 0.1;
+    public static final double kArcadeDeadBand = 0.1; 
 }
