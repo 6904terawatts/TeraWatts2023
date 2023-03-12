@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import com.fasterxml.jackson.databind.ser.std.NumberSerializers.DoubleSerializer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.ElbowSubsystem;
 
 public class RunArmJoystick extends CommandBase {
@@ -30,7 +31,10 @@ public class RunArmJoystick extends CommandBase {
   @Override
   public void execute(){
     double percentOutput = m_percentOutput.getAsDouble(); 
-    m_arm.setPercentOutput(percentOutput);
+    if (Math.abs(percentOutput) < Constants.kElavterDeadband) {
+      percentOutput = 0;
+    }
+    m_arm.setPercentOutput(percentOutput * .7);
   }
 
   // Called once the command ends or is interrupted.
