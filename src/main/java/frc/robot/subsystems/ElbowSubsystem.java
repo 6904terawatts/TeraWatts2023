@@ -17,7 +17,7 @@ public class ElbowSubsystem extends SubsystemBase {
     
     // elbowMotor = new CANSparkMax(1, MotorType.kBrushless);
     // armMotor = new CANSparkMax(2, MotorType.kBrushless);
-    elbowMotor.setInverted(true);
+    // elbowMotor.setInverted(true);
     // elbowMotor.follow(armMotor);
     
     
