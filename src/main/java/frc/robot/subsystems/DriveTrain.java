@@ -4,41 +4,34 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 public class DriveTrain extends SubsystemBase {
 
 private final TalonFX[] motors = {
-  new TalonFX(Constants.DRIVETRAIN_LEFT_BACK_TALON),
-  new TalonFX(Constants.DRIVETRAIN_RIGHT_BACK_TALON),
-  new TalonFX(Constants.DRIVETRAIN_LEFT_FRONT_TALON),
-  new TalonFX(Constants.DRIVETRAIN_RIGHT_FRONT_TALON)
+  new TalonFX(Constants.leftBackMotorId),
+  new TalonFX(Constants.rightBackMotorId),
+  new TalonFX(Constants.leftFrontMotorId),
+  new TalonFX(Constants.rightFrontMotorId)
 };
 
-
-
-
-
  
-  /** Creates a new ExampleSubsyitstem                         . */
+  /** Creates a new ExampleSubsystem. */
   public DriveTrain() {
 for (TalonFX motor : motors) {
   motor.configFactoryDefault();
   motor.setNeutralMode(NeutralMode.Brake);
-  // motor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0 )); 
-  
-} 
+}
+
 // motors[2].set(ControlMode.Follower , motors[0].getBaseID());
 // motors[3].set(ControlMode.Follower , motors[1].getBaseID());
+
 // set the motors to rotate the same way
 
 motors[1].setInverted(true);
@@ -46,26 +39,32 @@ motors[3].setInverted(true);
 
 motors[2].follow(motors[0]);
 motors[3].follow(motors[1]);
+
   }
 
+public void setArcadeDrive(double throttle, double turn) {
+  double leftOutput = throttle + turn;
+  double rightOutput = throttle - turn;
+  
+  
+  if (Math.abs(leftOutput) < Constants.kArcadeDeadBand) {
+    leftOutput = 0;
+  }
+  if (Math.abs(rightOutput) < Constants.kArcadeDeadBand) {
+    rightOutput = 0;
+  }
 
-public void setPercentOutput(double m_leftOutput, double rightOutput) {
-  motors[0].set(ControlMode.PercentOutput, m_leftOutput);
+  setPercentOutput(leftOutput, rightOutput);
+}
+
+
+public void setPercentOutput(double leftOutput, double rightOutput) {
+  motors[0].set(ControlMode.PercentOutput, leftOutput);
   motors[1].set(ControlMode.PercentOutput, rightOutput);
 }
-  double moveSpeed = -RobotContainer.driverController_1.getRawAxis(Constants.DRIVER_CONTROLLER_MOVE_AXIS);
-    double rotateSpeed = RobotContainer.driverController_2.getRawAxis(Constants.DRIVER_CONTROLLER_ROTATE_AXIS);
 
-    
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Falcon Temperature 20 ", motors[0].getTemperature());
-    
-    SmartDashboard.putNumber("Falcon Temperature 21 ", motors[1].getTemperature());
-    
-    SmartDashboard.putNumber("Falcon Temperature 22 ", motors[2].getTemperature());
-    
-    SmartDashboard.putNumber("Falcon Temperature 23 ", motors[3].getTemperature());
     // This method will be called once per scheduler run
   }
 
@@ -73,11 +72,4 @@ public void setPercentOutput(double m_leftOutput, double rightOutput) {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-
-
-public static void tankDrive(double drivetrainSpeed, double drivetrainSpeed2) {
-}
-
-
-
 }
