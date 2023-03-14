@@ -97,6 +97,10 @@ public class Robot extends TimedRobot {
  
  private final DoubleSolenoid Air1 =
  new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+
+ private final DoubleSolenoid Air2 =
+ new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
+ 
  
  private static final int kDoubleSolenoidForward = 2;
  private static final int kDoubleSolenoidReverse = 3;
@@ -126,6 +130,15 @@ public class Robot extends TimedRobot {
   } else if (xbox.getBButtonPressed()) {
 
     Air1.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  if  (xbox.getXButtonPressed()) {
+
+    Air2.set(DoubleSolenoid.Value.kForward);
+
+  } else if (xbox.getYButtonPressed()) {
+
+    Air2.set(DoubleSolenoid.Value.kReverse);
   }
   }
 
