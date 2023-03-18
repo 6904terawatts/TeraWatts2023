@@ -53,9 +53,11 @@ public void setArcadeDrive(double throttle, double turn) {
   if (Math.abs(rightOutput) < Constants.kArcadeDeadBand) {
     rightOutput = 0;
   }
-
-  setPercentOutput(leftOutput, rightOutput);
-}
+    double squaredRightOutput = rightOutput * rightOutput * Math.signum(rightOutput); 
+    double squaredLeftOutput = leftOutput * leftOutput * Math.signum(leftOutput); 
+  
+    setPercentOutput(squaredLeftOutput, squaredRightOutput);
+  }
 
 
 public void setPercentOutput(double leftOutput, double rightOutput) {
