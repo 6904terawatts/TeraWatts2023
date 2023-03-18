@@ -4,13 +4,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.DriveForward;
+import frc.robot.subsystems.DriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,9 +27,10 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   private final XboxController xbox = new XboxController(Constants.ARM_CONTROLLER_1);
-
+  private DriveTrain m_drivetrain;
+  private final Timer autoTimer = new Timer();
   /**
-   * This function is run when the robot is first started up and should be used for any
+   * This function is run when the robot is first starte          d up and should be used for any
    * initialization code.
    */
   @Override
@@ -33,6 +38,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    CameraServer.startAutomaticCapture();
   }
 
   /**
@@ -62,7 +68,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    autonomousPeriodic();
+    autoTimer.reset();
+    autoTimer.start();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -71,7 +79,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    
+  }
 
   @Override
   public void teleopInit() {
@@ -95,11 +105,11 @@ public class Robot extends TimedRobot {
   // We created a Doble Solenoid component and command it with releasing air and pushing in air. 
  
  
- private final DoubleSolenoid Air1 =
- new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+//  private final DoubleSolenoid Air1 =
+//  new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
 
- private final DoubleSolenoid Air2 =
- new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
+//  private final DoubleSolenoid Air2 =
+//  new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
  
  
  private static final int kDoubleSolenoidForward = 2;
@@ -123,23 +133,23 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     
     
-  if  (xbox.getAButtonPressed()) {
+  // if  (xbox.getAButtonPressed()) {
 
-    Air1.set(DoubleSolenoid.Value.kForward);
+  //   Air1.set(DoubleSolenoid.Value.kForward);
 
-  } else if (xbox.getBButtonPressed()) {
+  // } else if (xbox.getBButtonPressed()) {
 
-    Air1.set(DoubleSolenoid.Value.kReverse);
-  }
+  //   Air1.set(DoubleSolenoid.Value.kReverse);
+  // }
 
-  if  (xbox.getXButtonPressed()) {
+  // if  (xbox.getXButtonPressed()) {
 
-    Air2.set(DoubleSolenoid.Value.kForward);
+  //   Air2.set(DoubleSolenoid.Value.kForward);
 
-  } else if (xbox.getYButtonPressed()) {
+  // } else if (xbox.getYButtonPressed()) {
 
-    Air2.set(DoubleSolenoid.Value.kReverse);
-  }
+  //   Air2.set(DoubleSolenoid.Value.kReverse);
+  // }
   }
 
   @Override

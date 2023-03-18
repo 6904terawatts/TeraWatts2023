@@ -7,13 +7,19 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.commands.DriveForward;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.RunArmJoystick;
 import frc.robot.commands.SetArcadeDrive;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ElbowSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /**
@@ -26,6 +32,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final ElbowSubsystem m_ElbowSubsystem = new ElbowSubsystem();
+  private final Wrist m_Wrist = new Wrist();
+  private final Claw m_claw = new Claw();
 
   private final static Joystick leftJoystick = new Joystick(Constants.leftJoystickId);
   private final static Joystick rightJoystick = new Joystick(Constants.rightJoystickId);
@@ -46,7 +54,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    xboxController.a().onTrue(new InstantCommand(()->m_claw.setClaw(Value.kForward)));
+    xboxController.b().onTrue(new InstantCommand(()->m_claw.setClaw(Value.kReverse)));
+    xboxController.x().onTrue(new InstantCommand(()->m_Wrist.setWrist(Value.kForward)));
+    xboxController.y().onTrue(new InstantCommand(()->m_Wrist.setWrist(Value.kReverse)));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -55,6 +68,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return new DriveForward(m_driveTrain);
   }
 }
